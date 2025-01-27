@@ -158,7 +158,8 @@
           </form>
           {% if user.is_authenticated %}
           <!-- Show profile picture if user is logged in -->
-          <img src="{{ user.profile.picture.url }}" alt="User Profile" class="profile-pic">
+           <a href="{% url 'profile' %}" style=" text-decoration: none;">
+          <img src="{{ user.profile.picture.url }}"  class="profile-pic"></a>
           <a href="{% url 'logout' %}" class="btn btn-outline-light ms-2">Logout</a>
         {% else %}
           <!-- Show login button if user is not logged in -->

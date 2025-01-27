@@ -8,6 +8,8 @@ from django.contrib.auth import login , logout as auth_logout, authenticate
 def home(request):
     return render(request, 'accounts/home.html')
 
+def user_profile(request):
+    return render(request,'accounts/user_profile.html')
 
 def user_login(request):
     if request.method == "POST":

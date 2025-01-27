@@ -1,6 +1,5 @@
 {% extends "layout.html" %}
 
-
 {% block content %}
 <!-- Featured Recipes Section -->
 <div class="container mt-5">
@@ -8,24 +7,32 @@
     
     <div class="row">
         {% for item in data %}
-        <h1>{{ item.recipe_name }}</h1>
-        <p>{{ item.description }}</p>
-        <p>Cooking Time: {{ item.cooking_time }} minutes</p>
-    {% empty %}
-        <p>No recipes found for you.</p>
-    {% endfor %}
-    
-        <!-- Recipe 1 -->
+        
+        <!-- Recipe Card -->
         <div class="col-md-4 mb-3">
             <div class="card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY6B_bIaG0MUeLonaf7F2ErSYrx3LvS1SBvSuw8nZo5uuvtBQdFXV6YVM&s" class="card-img-top" alt="Recipe 1">
+                <!-- Image with consistent size -->
+                <img src="media/{{ item.image }}" class="card-img-top recipe-image" alt="Recipe 1">
                 <div class="card-body">
-                    <h5 class="card-title">Recipe 1</h5>
-                    <p class="card-text">A delicious and easy-to-make dish that will leave everyone asking for more!</p>
+                    <h5 class="card-title">{{ item.recipe_name }}</h5>
+                    <p class="card-text">{{ item.description|truncatechars:60 }}</p>
+                    <p>Cooking Time: {{ item.cook_time }} minutes</p>
                     <a href="/recipe/1" class="btn btn-primary">View Recipe</a>
                 </div>
             </div>
         </div>
+        {% empty %}
+        <p>No recipes found for you.</p>
+        {% endfor %}
     </div>
 </div>
+<style>
+    .recipe-image {
+        width: 100%; /* Ensure the image takes up the card's width */
+        height: 200px; /* Set a consistent height */
+        object-fit: cover; /* Ensures the image scales to fit the dimensions without distortion */
+        border-radius: 8px; /* Optional: Rounded corners */
+    }
+    </style>
+    
 {% endblock content %}
