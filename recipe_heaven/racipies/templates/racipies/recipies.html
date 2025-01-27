@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+
+
+{% block content %}
+<!-- Featured Recipes Section -->
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Featured Recipes</h2>
+    
+    <div class="row">
+        {% for item in data %}
+        <h1>{{ item.recipe_name }}</h1>
+        <p>{{ item.description }}</p>
+        <p>Cooking Time: {{ item.cooking_time }} minutes</p>
+    {% empty %}
+        <p>No recipes found for you.</p>
+    {% endfor %}
+    
+        <!-- Recipe 1 -->
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY6B_bIaG0MUeLonaf7F2ErSYrx3LvS1SBvSuw8nZo5uuvtBQdFXV6YVM&s" class="card-img-top" alt="Recipe 1">
+                <div class="card-body">
+                    <h5 class="card-title">Recipe 1</h5>
+                    <p class="card-text">A delicious and easy-to-make dish that will leave everyone asking for more!</p>
+                    <a href="/recipe/1" class="btn btn-primary">View Recipe</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

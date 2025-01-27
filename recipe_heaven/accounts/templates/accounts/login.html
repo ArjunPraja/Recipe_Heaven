@@ -1,0 +1,63 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="max-width: 500px; width: 100%; border-radius: 10px;">
+        <div class="card-body">
+            <h1 class="mb-4 text-center text-primary fw-bold">Welcome to Recipe Heaven</h1>
+            <h5 class="mb-4 text-center text-secondary">Login to your account</h5>
+
+            {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <!-- Error Viewer -->
+                {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                    <ul class="mb-0">
+                        {% for error in errors %}
+                        <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label fw-semibold">Email Address</label>
+                    <input 
+                        type="email" 
+                        class="form-control border-primary" 
+                        name="email" 
+                        id="exampleInputEmail1" 
+                        placeholder="Enter your email"
+                        required
+                    />
+                </div>
+
+                <div class="mb-3">
+                    <label for="passwordInput" class="form-label fw-semibold">Password</label>
+                    <input 
+                        type="password" 
+                        class="form-control border-primary" 
+                        name="password" 
+                        id="passwordInput" 
+                        placeholder="Enter your password"
+                        required
+                    />
+                </div>
+
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary fw-bold">Login</button>
+                </div>
+            </form>
+            
+            <p class="text-center mt-3 mb-0">
+                Don't have an account? <a href="{% url 'register' %}" class="text-decoration-none text-primary fw-bold">Register</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock content %}

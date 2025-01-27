@@ -1,0 +1,141 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;  background-color: #1b1b2f;">
+  <div class="card shadow-lg p-5" style="width: 100%; max-width: 800px; border-radius: 15px;  background-color: #1b1b2f;">
+    {% if messages %}
+    <div class="mt-3">
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+    <h2 class="mb-4 text-center" style="font-weight: bold; color:white;">Add a New Recipe</h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <!-- Error handling -->
+      {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+          Please correct the errors below.
+        </div>
+      {% endif %}
+    
+
+
+      <!-- Recipe Name -->
+      <div class="form-group mb-4">
+        <label for="recipeName" style="font-weight: 600; color:white;">Recipe Name </label>
+        <input 
+          type="text" 
+          class="form-control {% if form.recipe_name.errors %}is-invalid{% endif %}" 
+          name="recipe_name" 
+          id="recipeName" 
+          placeholder="Recipe Name" 
+          value="{{ form.recipe_name.value|default_if_none:'' }}" 
+          required
+          style="border-radius: 10px;">
+        <div class="invalid-feedback">
+          {{ form.recipe_name.errors|join:', ' }}
+        </div>
+      </div>
+
+      <!-- Recipe Category -->
+      <div class="form-group mb-4">
+        <label for="recipeCategory" style="font-weight: 600; color:white;">Recipe Category <span class="text-danger">*</span></label>
+        <select 
+          id="recipeCategory" 
+          name="recipe_category" 
+          class="form-control {% if form.recipe_category.errors %}is-invalid{% endif %}" 
+          required
+          style="border-radius: 10px;">
+          <option value="" selected disabled>Select a category</option>
+          <option value="Lunch" {% if form.recipe_category.value == 'Lunch' %}selected{% endif %}>Lunch</option>
+          <option value="Dinner" {% if form.recipe_category.value == 'Dinner' %}selected{% endif %}>Dinner</option>
+          <option value="Breakfast" {% if form.recipe_category.value == 'Breakfast' %}selected{% endif %}>Breakfast</option>
+          <option value="Veg" {% if form.recipe_category.value == 'Veg' %}selected{% endif %}>Veg</option>
+          <option value="Non-veg" {% if form.recipe_category.value == 'Non-veg' %}selected{% endif %}>Non-veg</option>
+        </select>
+        <div class="invalid-feedback">
+          {{ form.recipe_category.errors|join:', ' }}
+        </div>
+      </div>
+
+      <!-- Preparation Time -->
+      <div class="form-group mb-4">
+        <label for="prepTime" style="font-weight: 600; color:white;">Preparation Time (minutes) <span class="text-danger">*</span></label>
+        <input 
+          type="number" 
+          class="form-control {% if form.prep_time.errors %}is-invalid{% endif %}" 
+          name="prep_time" 
+          id="prepTime" 
+          placeholder="Preparation Time" 
+          min="0" 
+          value="{{ form.prep_time.value|default_if_none:'' }}" 
+          required
+          style="border-radius: 10px;">
+        <div class="invalid-feedback">
+          {{ form.prep_time.errors|join:', ' }}
+        </div>
+      </div>
+
+      <!-- Cooking Time -->
+      <div class="form-group mb-4">
+        <label for="cookTime" style="font-weight: 600; color:white;">Cooking Time (minutes) <span class="text-danger">*</span></label>
+        <input 
+          type="number" 
+          class="form-control {% if form.cook_time.errors %}is-invalid{% endif %}" 
+          name="cook_time" 
+          id="cookTime" 
+          placeholder="Cooking Time" 
+          min="0" 
+          value="{{ form.cook_time.value|default_if_none:'' }}" 
+          required
+          style="border-radius: 10px;">
+        <div class="invalid-feedback">
+          {{ form.cook_time.errors|join:', ' }}
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="form-group mb-4">
+        <label for="description" style="font-weight: 600; color:white;">Description <span class="text-danger">*</span></label>
+        <textarea 
+          class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
+          name="description" 
+          id="description" 
+          rows="4" 
+          placeholder="Brief description of the recipe" 
+          required
+          style="border-radius: 10px;">{{ form.description.value|default_if_none:'' }}</textarea>
+        <div class="invalid-feedback">
+          {{ form.description.errors|join:', ' }}
+        </div>
+      </div>
+
+      <!-- Recipe Image -->
+      <div class="form-group mb-4">
+        <label for="image" style="font-weight: 600; color:white;">Upload Recipe Image</label>
+        <input 
+          type="file" 
+          class="form-control-file {% if form.image.errors %}is-invalid{% endif %}" 
+          name="image" 
+          id="image" style="color:white;">
+        <div class="invalid-feedback">
+          {{ form.image.errors|join:', ' }}
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button 
+        type="submit" 
+        class="btn btn-primary btn-block"
+        style="border-radius: 25px; font-size: 18px; font-weight: 600;">
+        Add Recipe
+      </button>
+    </form>
+  </div>
+</div>
+{% endblock content %}
