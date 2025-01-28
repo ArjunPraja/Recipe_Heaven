@@ -1,22 +1,89 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container">
-<div class="box1 d-flex">
-    <div class="box2 h-50 w-50 text-center">
-        <h1>User Images Here </h1>
+<div class="container py-4">
+  <!-- User Info Section -->
+  <div class="d-flex align-items-center justify-content-center mb-5">
+    <!-- User Image Upload Section -->
+    <div class="box2 w-50 text-center p-3">
+        <h2 class="mb-4">Profile Image</h2>
+        {% if image %}
+            {% for i in image %}
+            <img src="/accounts/media/{{i.user_image}}" width="150" height="150" alt="User Image" class="img-fluid rounded-circle mb-3">
+            {% endfor %}
+        {% else %}
+            <img src="/static/images/default_user_image.jpg" width="150" height="150" alt="Default User Image" class="img-fluid rounded-circle mb-3">
+            <p class="text-muted">No image uploaded yet.</p>
+        {% endif %}
+        
+        <form method="POST"  action="{% url 'upload_user_image' %}" enctype="multipart/form-data" class="mt-3">
+            {% csrf_token %}
+            <div class="d-flex justify-content-center align-items-center mb-3">
+                <input type="file" name="image" class="form-control mb-2 w-50">
+            </div>
+                        <button type="submit" class="btn btn-primary">Update Profile Image</button>
+        </form>
     </div>
-    <div class="box3 h-50 w-50 text-center">
-        <h1>Welcome User.name </h1>
-        <h1>User.email</h1>
-    </div>
-</div>
+    
+      
 
-<div class="user_uploaded-data text-center m-6">
-   <h1>User Uploaded Recipies Comes Here </h1>
-</div>
-<div class="user_-rating text-center m-6">
-   <h1>Ratting Comments  </h1>
-</div>
-</div>
+    <!-- Welcome Section -->
+    <div class="box3 w-50 text-center p-3">
+      <h1>Welcome, {{ user.username }}</h1>
+      <hr>
+      <h3  style="color:white; margin-top: 50px;">Your Email Is :- {{ user.email }}</h3>
+      <p>Member since: {{ user.date_joined|date:"F j, Y" }}</p>
+    </div>
+  </div>
+
+  <!-- User Uploaded Recipes -->
+  <div class="user_uploaded-data text-center mb-5">
+    <h2 class="mb-4">Your Uploaded Recipes</h2>
+    {% if recipies %}
+    
+    <div class="row">
+      {% for item in recipies %}
+      
+      <!-- Recipe Card -->
+      <div class="col-md-4 mb-3">
+          <div class="card">
+              <!-- Image with consistent size -->
+              <img src="/accounts/media/{{ item.image }}" class="card-img-top recipe-image" alt="Recipe 1">
+              <div class="card-body">
+                  <h5 class="card-title">{{ item.recipe_name }}</h5>
+                  <p class="card-text">{{ item.description|truncatechars:60 }}</p>
+                  <p>Cooking Time: {{ item.cook_time }} minutes</p>
+                  <a href="/recipe/1" class="btn btn-primary">View Recipe</a>
+              </div>
+          </div>
+      </div>
+      
+      {% endfor %}
+  </div>
+    {% else %}
+      <p class="text-muted">You haven’t uploaded any recipes yet.</p>
+    {% endif %}
+  </div>
+
+  {% comment %} <!-- User Ratings and Comments -->
+  <div class="user_rating text-center">
+    <h2 class="mb-4">Your Ratings and Comments</h2>
+    {% if user.comments %}
+      <ul class="list-group mx-auto" style="max-width: 600px;">
+        {% for comment in user.comments %}
+          <li class="list-group-item">
+            <strong>{{ comment.recipe_title }}</strong>: {{ comment.text }}
+            <span class="badge bg-success float-end">{{ comment.rating }} / 5</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="text-muted">No ratings or comments available yet.</p>
+    {% endif %}
+  </div>
+</div> {% endcomment %}
+
+
+
+
 {% endblock content %}

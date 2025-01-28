@@ -24,7 +24,8 @@ def add_recipies(request):
             prep_time=prep_time,
             cook_time=cook_time,
             description=description,
-            image=image if image else None
+            image=image if image else None,
+            user=request.user
         )
         messages.success(request,message="Recipies Added Successfully")
         return redirect('/recipies/add/')

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half Page Cover</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      body, html {
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+      }
+      
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      
+      #coverPage {
+        position: fixed;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: width 0.5s ease;
+      }
+      
+      #coverPage.show {
+        width: 50%;
+      }
+      
+      .content {
+        color: white;
+        text-align: center;
+        padding: 20px;
+        width: 80%;
+      }
+      
+      p {
+        font-size: 18px;
+      }
+      
+  </style>
+</head>
+
+<body>
+  <button id="toggleButton">Click to Show Content</button>
+
+  <div id="coverPage">
+    <div class="content">
+      <p>This is the paragraph that will appear when the button is clicked.</p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("toggleButton").addEventListener("click", function() {
+      document.getElementById("coverPage").classList.toggle("show");
+    });
+  </script>
+</body>
+</html>

@@ -1,7 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Recipes(models.Model):
+    
     recipe_name = models.CharField(max_length=150)
     recipe_category = models.CharField(max_length=100)
     prep_time = models.PositiveIntegerField(help_text="Preparation time in minutes")
@@ -10,6 +12,8 @@ class Recipes(models.Model):
     image = models.ImageField(upload_to='recipes/', blank=True, null=True, help_text="Upload an image of the recipe")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes', null=True)
+  # Add user field
 
     def __str__(self):
         return self.recipe_name
@@ -25,6 +29,7 @@ class Recipes(models.Model):
 
     def total_ratings(self):
         return self.ratings.count()
+
 
 
 class Rating(models.Model):

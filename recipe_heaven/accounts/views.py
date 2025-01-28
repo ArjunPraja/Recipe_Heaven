@@ -1,15 +1,30 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import login , logout as auth_logout, authenticate
-
+from .models import user_image
+from racipies.models import Recipes
 
 def home(request):
     return render(request, 'accounts/home.html')
 
+def user_upload_images(request):
+    if request.method == 'POST':
+        image = request.FILES.get('image')
+        if image:
+            # Save the uploaded image and associate it with the logged-in user
+            user_image.objects.create(user=request.user, user_image=image)
+            return redirect('profile')  # Redirect to the user profile page or any desired URL
+        else:
+            return redirect('profile')
+    return render(request, 'accounts/user_profile.html')
 def user_profile(request):
-    return render(request,'accounts/user_profile.html')
+    user = get_object_or_404(User, id=request.user.id)
+    print(request.user)
+    image=user_image.objects.filter(user=request.user)
+    recipies=Recipes.objects.filter(user=request.user)
+    return render(request,'accounts/user_profile.html',{'user':user, 'image':image,'recipies':recipies})
 
 def user_login(request):
     if request.method == "POST":
