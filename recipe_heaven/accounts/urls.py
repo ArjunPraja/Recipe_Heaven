@@ -15,7 +15,6 @@ urlpatterns = [
 path('delete_recipe/<int:recipe_id>', delete_recipe, name='delete_recipes'),
 path('remove_favourite/<int:favorite_id>/',remove_favourite , name='remove_favourite'),
 
-    # path('profile_logo>',Profile_logo,name='profile_logo')  # Fixed syntax by adding `name='profile'`
 ]
 handler404 = 'recipes.views.custom_404'  
 if settings.DEBUG:

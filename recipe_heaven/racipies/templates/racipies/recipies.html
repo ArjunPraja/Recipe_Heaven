@@ -2,15 +2,13 @@
 
 {% block content %}
 
-<!-- Featured Recipes Section -->
 <div class="container ">
-    <!-- Search Bar -->
-<!-- Search Bar -->
+
 <div class="search-container container mb-4">
     <div class="search-box">
         <input type="text" id="searchInput" class="form-control" placeholder="Search for recipes..." onkeyup="searchRecipes()">
         <button class="search-btn">
-            <i class="fa fa-search"></i> <!-- Font Awesome search icon -->
+            <i class="fa fa-search"></i> 
         </button>
     </div>
 </div>
@@ -27,28 +25,26 @@
 {% if data %}
     <div class="row g-4">
         {% for item in data %}
-        <!-- Recipe Card -->
-        <div class="col-12 col-md-6 col-lg-3 recipe-card">  <!-- Adjust the grid for different screen sizes -->
+        <div class="col-12 col-md-6 col-lg-3 recipe-card"> 
             <div class="card shadow-sm h-100 d-flex flex-column recipe-card">
-                <!-- Recipe Image -->
                 <img src="/accounts/media/{{ item.image }}" class="card-img-top" alt="Recipe Image" style="object-fit: cover; height: 200px;">
                 
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title" style="font-size: 1.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.recipe_name }}</h5>
                     <p class="card-text" style="font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.description|truncatechars:60 }}</p>
-                    <p class="card-text" style="font-size: 0.85rem;"><strong>Cooking Time:</strong> {{ item.cook_time }} mins</p>
+                    <p class="card-text card-cook" style="font-size: 0.85rem;"><strong>Cooking Time:</strong> {{ item.cook_time }} mins</p>
                     
-                    <!-- Average Rating -->
-                    <p class="card-text" style="font-size: 0.9rem;">
+                    <p hidden class="card-category">{{item.recipe_category}}/p>
+                    <p class="card-text card-rating" style="font-size: 0.9rem;">
                         <strong>Average Rating: </strong>
                         <span>
                             {% for i in 1..5 %}
                                 {% if i <= item.average_rating %}
-                                    &#9733;  <!-- Full Star -->
+                                    &#9733;  
                                 {% elif i <= item.average_rating|add:0.5 %}
-                                    &#9734;  <!-- Half Star -->
+                                    &#9734;  
                                 {% else %}
-                                    &#9734;  <!-- Empty Star -->
+                                    &#9734; 
                                 {% endif %}
                             {% endfor %}
                         </span>
@@ -78,29 +74,25 @@
                             <button type="submit" class="btn btn-primary btn-sm favourite-btn {% if item in request.user.favourites.all %} active {% endif %}">
                                 <span class="btn-text">
                                     {% if item in request.user.favourites.all %}
-                                    <small>Remove ❤️</small> <!-- Filled Heart -->
+                                    <small>Remove ❤️</small> 
                                     {% else %}
-                                    <small>Add 🤍</small> <!-- Empty Heart -->
+                                    <small>Add 🤍</small> 
                                     {% endif %}
                                 </span>
                             </button>
                         </form>                    
                     </div>
-                    <!-- View Recipe Icon -->
-                    
-                    <!-- Favorite Button -->
+                 
                 </div>
             </div>
         </div>
         
 
-      <!-- Recipe Modal -->
 <div class="modal fade" id="recipeModal{{ item.id }}" tabindex="-1" aria-labelledby="recipeModalLabel{{ item.id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 rounded-4 shadow-lg"
              style="box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.3); background: #fff;">
 
-            <!-- Modal Header -->
             <div class="modal-header bg-dark text-white rounded-top-4">
                 <h5 class="modal-title fw-bold text-uppercase" id="recipeModalLabel{{ item.id }}">
                     🍽️ {{ item.recipe_name }}
@@ -108,11 +100,9 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <!-- Modal Body -->
             <div class="modal-body p-4" style="background: #f8f9fa; border-radius: 10px;">
                 <div class="row align-items-center">
                     
-                    <!-- Recipe Image -->
                     <div class="col-md-5 text-center">
                         <div class="position-relative">
                             <img src="/accounts/media/{{ item.image }}" class="img-fluid rounded-3 shadow-lg"
@@ -124,7 +114,6 @@
                         </div>
                     </div>
 
-                    <!-- Recipe Details -->
                     <div class="col-md-7">
                         <h3 class="text-primary fw-bold">{{ item.recipe_name }}</h3>
                         <p class="text-muted">
@@ -146,7 +135,6 @@
                 </div>
             </div>
 
-            <!-- Modal Footer -->
             <div class="modal-footer bg-light d-flex justify-content-between rounded-bottom-4">
                 <p class="text-muted mb-0">✨ Enjoy your cooking! 🍽️</p>
                 <button type="button" class="btn btn-danger shadow-sm px-4 py-2 fw-bold rounded-3" data-bs-dismiss="modal">
@@ -157,11 +145,9 @@
     </div>
 </div>
 
-        <!-- View Reviews Modal -->
 <div class="modal fade" id="viewReviewsModal{{ item.id }}" tabindex="-1" aria-labelledby="viewReviewsModalLabel{{ item.id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content shadow-lg border-0 rounded-3" style="box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);">
-            <!-- Modal Header -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title fw-bold" id="viewReviewsModalLabel{{ item.id }}">
                     Reviews for {{ item.recipe_name }}
@@ -169,7 +155,6 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <!-- Modal Body -->
             <div class="modal-body p-4" style="background-color: #f8f9fa; border-radius: 10px;">
                 <h5 class="fw-bold text-dark">Reviews:</h5>
                 
@@ -184,7 +169,6 @@
                 {% endfor %}
             </div>
 
-            <!-- Modal Footer -->
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">Close</button>
             </div>
@@ -192,13 +176,11 @@
     </div>
 </div>
 
-<!-- Write Review Modal -->
 <div class="modal fade" id="writeReviewModal{{ item.id }}" tabindex="-1" aria-labelledby="writeReviewModalLabel{{ item.id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content border-0 rounded-4 shadow-lg" 
              style="box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.25); background: #fff;">
             
-            <!-- Modal Header -->
             <div class="modal-header bg-warning text-white rounded-top-4">
                 <h5 class="modal-title fw-bold" id="writeReviewModalLabel{{ item.id }}">
                     ✍️ Write a Review for <span class="text-uppercase">{{ item.recipe_name }}</span>
@@ -206,12 +188,10 @@
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <!-- Modal Body -->
             <div class="modal-body p-4" style="background: #f9f9f9; border-radius: 10px;">
                 <form action="{% url 'submit_review' item.id %}" method="POST">
                     {% csrf_token %}
 
-                    <!-- Rating Field -->
                     <div class="mb-4">
                         <label for="rating" class="form-label fw-bold text-dark">⭐ Select Rating</label>
                         <select class="form-select shadow-sm rounded-3" id="rating" name="rating" required 
@@ -225,14 +205,12 @@
                         </select>
                     </div>
 
-                    <!-- Review Text Field -->
                     <div class="mb-4">
                         <label for="reviewText" class="form-label fw-bold text-dark">📝 Your Review</label>
                         <textarea class="form-control shadow-sm rounded-3" id="reviewText" name="reviewText" rows="4" required 
                                   style="border: 2px solid #ffc107; transition: 0.3s;"></textarea>
                     </div>
 
-                    <!-- Submit Button -->
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn btn-success px-4 py-2 fw-bold rounded-3 shadow-sm">
                             ✅ Submit Review
@@ -241,7 +219,6 @@
                 </form>
             </div>
 
-            <!-- Modal Footer -->
             <div class="modal-footer border-0">
                 <button type="button" class="btn btn-danger px-4 py-2 rounded-3 shadow-sm" data-bs-dismiss="modal">
                     ❌ Close
@@ -337,7 +314,7 @@
 <script>
     document.querySelectorAll('.favourite-btn').forEach(function(button) {
         button.addEventListener('click', function(e) {
-            e.preventDefault();  // Prevent the default form submission
+            e.preventDefault();  
 
             const form = button.closest('form');
             const url = form.action;
@@ -349,9 +326,8 @@
                 },
                 body: new FormData(form)
             })
-            .then(response => response.json())  // Assuming the response is in JSON format
+            .then(response => response.json())
             .then(data => {
-                // Update the button text based on the favorite status
                 if (data.is_favorite) {
                     button.innerHTML = 'Remove  ❤️';
                 } else {
@@ -371,12 +347,14 @@
             cards.forEach(card => {
                 let recipeName = card.querySelector('.card-title').textContent.toLowerCase();
                 let description = card.querySelector('.card-text').textContent.toLowerCase();
+                let category = card.querySelector('.card-category').textContent.toLowerCase();
+                let cook = card.querySelector('.card-cook').textContent.toLowerCase();
+                let rating = card.querySelector('.card-rating').textContent.toLowerCase();
                 
-                // Check if the input text matches any part of the recipe name or description
-                if (recipeName.includes(input) || description.includes(input)) {
-                    card.style.display = "block"; // Show card
+                if (recipeName.includes(input) || description.includes(input) || category.includes(input) || cook.includes(input) || rating.includes(input)) {
+                    card.style.display = "block"; 
                 } else {
-                    card.style.display = "none"; // Hide card
+                    card.style.display = "none"; 
                 }
             });
         }

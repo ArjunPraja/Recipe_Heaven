@@ -22,7 +22,6 @@ def user_profile_image(request):
             user_profile = user_image.objects.get(user=request.user)
             return {'profile_image_url': user_profile.profile_image.url}
         except user_image.DoesNotExist:
-            # Default image if no profile exists
             return {'profile_image_url':None}
     return {'profile_image_url': None}
 
@@ -34,9 +33,8 @@ def user_upload_images(request):
     if request.method == 'POST':
         image = request.FILES.get('image')
         if image:
-            # Save the uploaded image and associate it with the logged-in user
             user_image.objects.create(user=request.user, user_image=image)
-            return redirect('profile')  # Redirect to the user profile page or any desired URL
+            return redirect('profile')  
         else:
             return redirect('profile')
     return render(request, 'accounts/user_profile.html')

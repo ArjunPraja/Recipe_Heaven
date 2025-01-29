@@ -9,10 +9,8 @@ def recipies(request):
     if request.method == "GET":
         data = Recipes.objects.all()
         
-        # Fetch all reviews for each recipe
         for item in data:
-            item.reviews = Rating.objects.filter(recipe=item)  # Assuming Rating model has a foreign key to Recipes
-        
+            item.reviews = Rating.objects.filter(recipe=item)  
         return render(request, "racipies/recipies.html", {'data': data})
     return render(request, "racipies/recipies.html")
 
