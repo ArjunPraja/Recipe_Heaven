@@ -13,43 +13,48 @@
   </div>
   {% endif %}
   <!-- User Info Section -->
-  <div class="d-flex align-items-center justify-content-center mb-5">
-   
-    <!-- User Image Upload Section -->
-    <div class="box2 w-50 text-center p-3">
-        <h2 class="mb-4">Profile Image</h2>
-        {% if image %}
-            {% for i in image %}
-            <img src="/accounts/media/{{i.user_image}}" width="150" height="150" alt="User Image" class="img-fluid rounded-circle mb-3">
-            {% endfor %}
-        {% else %}
-            <img src="/static/images/default_user_image.jpg" width="150" height="150" alt="Default User Image" class="img-fluid rounded-circle mb-3">
-            <p class="text-muted">No image uploaded yet.</p>
-        {% endif %}
+  <div class="container my-5">
+    <div class="row d-flex align-items-center justify-content-center">
         
-        <form method="POST"  action="{% url 'upload_user_image' %}" enctype="multipart/form-data" class="mt-3">
-            {% csrf_token %}
-            <div class="d-flex justify-content-center align-items-center mb-3">
-                <input type="file" name="image" class="form-control mb-2 w-50">
-            </div>
-                        <button type="submit" class="btn btn-primary">Update Profile Image</button>
-        </form>
-    </div>
-    
-      
+        <!-- User Image Upload Section -->
+        <div class="col-lg-6 col-md-12 text-center p-4 rounded  text-white">
+            <h2 class="mb-4">Profile Image</h2>
+            
+            {% if image %}
+                {% for i in image %}
+                    <img src="/accounts/media/{{ i.user_image }}" width="150" height="150" 
+                         alt="User Image" class="img-fluid rounded-circle mb-3 shadow">
+                {% endfor %}
+            {% else %}
+                <img src="/static/images/default_user_image.jpg" width="150" height="150" 
+                     alt="Default User Image" class="img-fluid rounded-circle mb-3 shadow">
+                <p class="text-light">No image uploaded yet.</p>
+            {% endif %}
 
-    <!-- Welcome Section -->
-    <div class="box3 w-50 text-center p-3">
-      <h1>Welcome, {{ user.username }}</h1>
-      <hr>
-      <h3  style="color:white; margin-top: 50px;">Your Email Is :- {{ user.email }}</h3>
-      <p>Member since: {{ user.date_joined|date:"F j, Y" }}</p>
+            <form method="POST" action="{% url 'upload_user_image' %}" enctype="multipart/form-data" class="mt-3">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <input type="file" name="image" class="form-control w-75 mx-auto">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Profile Image</button>
+            </form>
+        </div>
+
+        <!-- Welcome Section -->
+        <div class="col-lg-6 col-md-12 text-center p-4  rounded  text-white mt-4 mt-lg-0">
+            <h1>Welcome, {{ user.username }}</h1>
+            <hr class="bg-light">
+            <h3 class="mt-4">Your Email: {{ user.email }}</h3>
+            <p>Member since: {{ user.date_joined|date:"F j, Y" }}</p>
+        </div>
+
     </div>
-  </div>
+</div>
+
 
    <!-- User Uploaded Recipes -->
    <div class="user_uploaded-data text-center mt-5">
-    <h2 class="mb-4">Your Uploaded Recipes</h2>
+    <h2 class="mb-4 text-primary">Your Uploaded Recipes</h2>
     {% if recipies %}
       <div class="row g-4">
         {% for item in recipies %}
@@ -125,7 +130,7 @@
         {% endfor %}
       </div>
     {% else %}
-      <p class="text-muted">You haven’t uploaded any recipes yet.</p>
+      <p class="text-light">You haven’t uploaded any recipes yet.</p>
     {% endif %}
   </div>
 </div>
@@ -153,12 +158,12 @@
           {% endfor %}
       </ul>
   {% else %}
-      <p class="text-muted">No ratings or comments available yet. Be the first to leave a review!</p>
+      <p class="text-light">No ratings or comments available yet. Be the first to leave a review!</p>
   {% endif %}
 </div>
 <!-- User Favorite Recipes Section -->
 <div class="user_favorite-recipes text-center mt-4 container">
-  <h2 class="mb-3">Your Favorite Recipes</h2>
+  <h2 class="mb-3 text-primary">Your Favorite Recipes</h2>
   {% if favorite_recipes %}
       <div class="row g-3">
           {% for favorite in favorite_recipes %}
@@ -215,7 +220,7 @@
           {% endfor %}
       </div>
   {% else %}
-      <p class="text-muted">No favorite recipes yet.</p>
+      <p class="text-light">No favorite recipes yet.</p>
   {% endif %}
 </div>
 

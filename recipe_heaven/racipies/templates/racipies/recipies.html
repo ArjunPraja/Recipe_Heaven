@@ -4,92 +4,96 @@
 
 <!-- Featured Recipes Section -->
 <div class="container ">
-    <h2 class="text-center mb-4">Featured Recipes</h2>
-      {% if messages %}
-    <div class="mt-3">
-      {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-      {% endfor %}
+    <!-- Search Bar -->
+<!-- Search Bar -->
+<div class="search-container container mb-4">
+    <div class="search-box">
+        <input type="text" id="searchInput" class="form-control" placeholder="Search for recipes..." onkeyup="searchRecipes()">
+        <button class="search-btn">
+            <i class="fa fa-search"></i> <!-- Font Awesome search icon -->
+        </button>
     </div>
-    {% endif %}
-    {% if data %}
+</div>
+{% if messages %}
+  <div class="mt-3">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% if data %}
     <div class="row g-4">
-        <div class="row g-3">
-            {% for item in data %}
-            <!-- Recipe Card -->
-            <div class="col-md-6 col-lg-3">
-                <div class="card shadow-sm h-100">
-                    <!-- Recipe Image -->
-                    <img src="/accounts/media/{{ item.image }}" class="card-img-top" alt="Recipe Image" style="object-fit: cover; height: 200px;">
+        {% for item in data %}
+        <!-- Recipe Card -->
+        <div class="col-12 col-md-6 col-lg-3 recipe-card">  <!-- Adjust the grid for different screen sizes -->
+            <div class="card shadow-sm h-100 d-flex flex-column recipe-card">
+                <!-- Recipe Image -->
+                <img src="/accounts/media/{{ item.image }}" class="card-img-top" alt="Recipe Image" style="object-fit: cover; height: 200px;">
+                
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" style="font-size: 1.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.recipe_name }}</h5>
+                    <p class="card-text" style="font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.description|truncatechars:60 }}</p>
+                    <p class="card-text" style="font-size: 0.85rem;"><strong>Cooking Time:</strong> {{ item.cook_time }} mins</p>
                     
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title" style="font-size: 1.1rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.recipe_name }}</h5>
-                        <p class="card-text" style="font-size: 0.9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ item.description|truncatechars:60 }}</p>
-                        <p class="card-text" style="font-size: 0.85rem;"><strong>Cooking Time:</strong> {{ item.cook_time }} mins</p>
-                        
-                        <!-- Average Rating -->
-                        <p class="card-text" style="font-size: 0.9rem;">
-                            <strong>Average Rating: </strong>
-                            <span>
-                                {% for i in 1..5 %}
-                                    {% if i <= item.average_rating %}
-                                        &#9733;  <!-- Full Star -->
-                                    {% elif i <= item.average_rating|add:0.5 %}
-                                        &#9734;  <!-- Half Star -->
-                                    {% else %}
-                                        &#9734;  <!-- Empty Star -->
-                                    {% endif %}
-                                {% endfor %}
-                            </span>
-                            ({{ item.average_rating }})
-                        </p>
-                       
+                    <!-- Average Rating -->
+                    <p class="card-text" style="font-size: 0.9rem;">
+                        <strong>Average Rating: </strong>
+                        <span>
+                            {% for i in 1..5 %}
+                                {% if i <= item.average_rating %}
+                                    &#9733;  <!-- Full Star -->
+                                {% elif i <= item.average_rating|add:0.5 %}
+                                    &#9734;  <!-- Half Star -->
+                                {% else %}
+                                    &#9734;  <!-- Empty Star -->
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        ({{ item.average_rating }})
+                    </p>
+                   
 
-                        <!-- Buttons (Icons) -->
-                        <div class="d-flex justify-content-between mt-auto">
-                            <!-- View Reviews Icon -->
-                            <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#viewReviewsModal{{ item.id }}">
-                                <small>view review</small>
-                            </button>
-                            
-                            <!-- Write a Review Icon -->
-                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#writeReviewModal{{ item.id }}">
-                                <small>write review</small>
-                            </button>
-                            
-                            
-                        </div >
-                        <div class="d-flex justify-content-between mt-2">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#recipeModal{{ item.id }}">
-                                <small>view Recipies </small>
-                            </button>
-                            
-                            <form id="favourite-form-{{ item.id }}" action="{% url 'toggle_favourite' item.id %}" method="POST" class="favourite-form ">
-                                {% csrf_token %}
-                                <button type="submit" class="btn btn-primary btn-sm favourite-btn {% if item in request.user.favourites.all %} active {% endif %}">
-                                    <span class="btn-text">
-                                        {% if item in request.user.favourites.all %}
-                                        <small>Remove ❤️</small> <!-- Filled Heart -->
-                                        {% else %}
-                                        <small>Add 🤍</small> <!-- Empty Heart -->
-                                        {% endif %}
-                                    </span>
-                                </button>
-                            </form>                    
-                        </div>
-                        <!-- View Recipe Icon -->
+                    <!-- Buttons (Icons) -->
+                    <div class="d-flex justify-content-between mt-auto">
+                        <!-- View Reviews Icon -->
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#viewReviewsModal{{ item.id }}">
+                            <small>view review</small>
+                        </button>
                         
-                        <!-- Favorite Button -->
-                        
+                        <!-- Write a Review Icon -->
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#writeReviewModal{{ item.id }}">
+                            <small>write review</small>
+                        </button>
                     </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#recipeModal{{ item.id }}">
+                            <small>view Recipies </small>
+                        </button>
+                        
+                        <form id="favourite-form-{{ item.id }}" action="{% url 'toggle_favourite' item.id %}" method="POST" class="favourite-form">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm favourite-btn {% if item in request.user.favourites.all %} active {% endif %}">
+                                <span class="btn-text">
+                                    {% if item in request.user.favourites.all %}
+                                    <small>Remove ❤️</small> <!-- Filled Heart -->
+                                    {% else %}
+                                    <small>Add 🤍</small> <!-- Empty Heart -->
+                                    {% endif %}
+                                </span>
+                            </button>
+                        </form>                    
+                    </div>
+                    <!-- View Recipe Icon -->
+                    
+                    <!-- Favorite Button -->
                 </div>
             </div>
-            
         </div>
         
+
       <!-- Recipe Modal -->
 <div class="modal fade" id="recipeModal{{ item.id }}" tabindex="-1" aria-labelledby="recipeModalLabel{{ item.id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -251,11 +255,79 @@
         {% endfor %}
     </div>
     {% else %}
-    <p class="text-muted">You haven’t uploaded any recipes yet.</p>
+    <p class="text-light">We haven’t uploaded any recipes yet.</p>
     {% endif %}
 </div>
 
 <style>
+    .search-container {
+        text-align: center;
+        padding: 20px 0;
+    }
+
+    .search-box {
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        max-width: 500px;
+        border-radius: 50px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-box input {
+        width: 100%;
+        padding: 10px 50px 10px 20px;
+        border: none;
+        border-radius: 50px;
+        font-size: 16px;
+        box-sizing: border-box;
+        outline: none;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .search-box input:focus {
+        background-color: #f4f4f4;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05);
+    }
+
+    .search-btn {
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        background-color: #ff5733;
+        border: none;
+        padding: 12px 20px;
+        color: white;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        outline: none;
+    }
+
+    .search-btn:hover {
+        background-color: #d04e2a;
+    }
+
+    .search-btn i {
+        font-size: 18px;
+    }
+
+    /* Add a subtle hover effect on the search bar */
+    .search-box:hover input {
+        background-color: #f9f9f9;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .search-box {
+            width: 90%;
+        }
+    }
+
+
     .bi-star, .bi-star-fill {
         font-size: 1.25rem;
         margin-right: 5px;
@@ -289,6 +361,26 @@
             .catch(error => console.error('Error:', error));
         });
     });
+
+
+
+        function searchRecipes() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let cards = document.querySelectorAll('.recipe-card');
+    
+            cards.forEach(card => {
+                let recipeName = card.querySelector('.card-title').textContent.toLowerCase();
+                let description = card.querySelector('.card-text').textContent.toLowerCase();
+                
+                // Check if the input text matches any part of the recipe name or description
+                if (recipeName.includes(input) || description.includes(input)) {
+                    card.style.display = "block"; // Show card
+                } else {
+                    card.style.display = "none"; // Hide card
+                }
+            });
+        }
+    
 </script>
 
 {% endblock content %}

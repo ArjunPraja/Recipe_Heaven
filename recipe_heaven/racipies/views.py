@@ -52,29 +52,22 @@ def add_recipies(request):
 
 @login_required(login_url='/accounts/login/')
 def submit_review(request, recipe_id):
-    # Get the recipe object
     recipe = get_object_or_404(Recipes, id=recipe_id)
     
     if request.method == "POST":
         rating_value = request.POST.get("rating")
         review_text = request.POST.get("reviewText")
         
-        # Ensure the user has not already reviewed this recipe
-        if Rating.objects.filter(recipe=recipe, user=request.user).exists():
-            messages.warning(request,"You have already submitted a review for this recipe.")
-            return redirect('recipies') 
 
-        # Create a new Rating object
         Rating.objects.create(
             recipe=recipe,
             user=request.user,
             rating=rating_value,
             review=review_text
         )
-        
-        return redirect('recipies')  # Redirect to a page, e.g., the recipe detail page
+        messages.success(request,"Review Submitted Successfully")
+        return redirect('recipies')  
 
-    # If it's not a POST request, we render the page or handle it differently
     return redirect('recipies') 
 
 

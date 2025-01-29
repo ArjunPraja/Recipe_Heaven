@@ -155,3 +155,14 @@ def remove_favourite(request,favorite_id):
     Favourite.objects.filter(id=favorite_id).delete()
     messages.success(request,"Recipies Remove From The Favourite SuccessFully ")
     return redirect('/accounts/profile/')
+
+
+
+
+
+def custom_404(request, exception):
+    """
+    Custom 404 Error Handler - Redirects users to the homepage
+    when they access an invalid URL.
+    """
+    return redirect('home')

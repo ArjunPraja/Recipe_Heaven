@@ -1,6 +1,7 @@
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import handler404
 from .views import home, user_login, register, user_logout, user_profile, user_upload_images, delete_rating,delete_recipe,remove_favourite
 
 urlpatterns = [
@@ -16,6 +17,6 @@ path('remove_favourite/<int:favorite_id>/',remove_favourite , name='remove_favou
 
     # path('profile_logo>',Profile_logo,name='profile_logo')  # Fixed syntax by adding `name='profile'`
 ]
-
+handler404 = 'recipes.views.custom_404'  
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
