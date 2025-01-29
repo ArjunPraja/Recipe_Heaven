@@ -9,6 +9,8 @@ class Recipes(models.Model):
     prep_time = models.PositiveIntegerField(help_text="Preparation time in minutes")
     cook_time = models.PositiveIntegerField(help_text="Cooking time in minutes")
     description = models.TextField(blank=True, help_text="Brief description of the recipe")
+    ingredients=models.TextField(blank=True)
+    steps=models.TextField(blank=True)
     image = models.ImageField(upload_to='recipes/', blank=True, null=True, help_text="Upload an image of the recipe")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -52,3 +54,13 @@ class Rating(models.Model):
     def __str__(self):
         return f"Rating: {self.rating} for Recipe: {self.recipe.recipe_name}"
     
+
+
+
+# In models.py
+class Favourite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipes, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.recipe.recipe_name}"

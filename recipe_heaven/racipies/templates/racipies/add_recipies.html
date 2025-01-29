@@ -1,8 +1,8 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;  background-color: #1b1b2f;">
-  <div class="card shadow-lg p-5" style="width: 100%; max-width: 800px; border-radius: 15px;  background-color: #1b1b2f;">
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; background-color: #1b1b2f;">
+  <div class="card shadow-lg p-5" style="width: 100%; max-width: 800px; border-radius: 15px; background-color: #1b1b2f;">
     {% if messages %}
     <div class="mt-3">
       {% for message in messages %}
@@ -12,22 +12,19 @@
         </div>
       {% endfor %}
     </div>
-  {% endif %}
+    {% endif %}
     <h2 class="mb-4 text-center" style="font-weight: bold; color:white;">Add a New Recipe</h2>
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
-      <!-- Error handling -->
       {% if form.errors %}
         <div class="alert alert-danger" role="alert">
           Please correct the errors below.
         </div>
       {% endif %}
-    
-
 
       <!-- Recipe Name -->
       <div class="form-group mb-4">
-        <label for="recipeName" style="font-weight: 600; color:white;">Recipe Name </label>
+        <label for="recipeName" style="font-weight: 600; color:white;">Recipe Name</label>
         <input 
           type="text" 
           class="form-control {% if form.recipe_name.errors %}is-invalid{% endif %}" 
@@ -57,6 +54,16 @@
           <option value="Breakfast" {% if form.recipe_category.value == 'Breakfast' %}selected{% endif %}>Breakfast</option>
           <option value="Veg" {% if form.recipe_category.value == 'Veg' %}selected{% endif %}>Veg</option>
           <option value="Non-veg" {% if form.recipe_category.value == 'Non-veg' %}selected{% endif %}>Non-veg</option>
+          <option value="Snacks" {% if form.recipe_category.value == 'Snacks' %}selected{% endif %}>Snacks</option>
+          <option value="Desserts" {% if form.recipe_category.value == 'Desserts' %}selected{% endif %}>Desserts</option>
+          <option value="Appetizers" {% if form.recipe_category.value == 'Appetizers' %}selected{% endif %}>Appetizers</option>
+          <option value="Salads" {% if form.recipe_category.value == 'Salads' %}selected{% endif %}>Salads</option>
+          <option value="Soups" {% if form.recipe_category.value == 'Soups' %}selected{% endif %}>Soups</option>
+          <option value="Beverages" {% if form.recipe_category.value == 'Beverages' %}selected{% endif %}>Beverages</option>
+          <option value="Side Dishes" {% if form.recipe_category.value == 'Side Dishes' %}selected{% endif %}>Side Dishes</option>
+          <option value="Sauces" {% if form.recipe_category.value == 'Sauces' %}selected{% endif %}>Sauces</option>
+          <option value="Other" {% if form.recipe_category.value == 'Other' %}selected{% endif %}>Other</option>
+          
         </select>
         <div class="invalid-feedback">
           {{ form.recipe_category.errors|join:', ' }}
@@ -115,6 +122,38 @@
         </div>
       </div>
 
+      <!-- Ingredients -->
+      <div class="form-group mb-4">
+        <label for="ingredients" style="font-weight: 600; color:white;">Ingredients <span class="text-danger">*</span></label>
+        <textarea 
+          class="form-control {% if form.ingredients.errors %}is-invalid{% endif %}" 
+          name="ingredients" 
+          id="ingredients" 
+          rows="4" 
+          placeholder="List of ingredients (e.g., 1 cup flour, 2 eggs, 1 tsp sugar)" 
+          required
+          style="border-radius: 10px;">{{ form.ingredients.value|default_if_none:'' }}</textarea>
+        <div class="invalid-feedback">
+          {{ form.ingredients.errors|join:', ' }}
+        </div>
+      </div>
+
+      <!-- Steps to Cook -->
+      <div class="form-group mb-4">
+        <label for="steps" style="font-weight: 600; color:white;">Steps to Cook <span class="text-danger">*</span></label>
+        <textarea 
+          class="form-control {% if form.steps.errors %}is-invalid{% endif %}" 
+          name="steps" 
+          id="steps" 
+          rows="6" 
+          placeholder="Step-by-step instructions for cooking" 
+          required
+          style="border-radius: 10px;">{{ form.steps.value|default_if_none:'' }}</textarea>
+        <div class="invalid-feedback">
+          {{ form.steps.errors|join:', ' }}
+        </div>
+      </div>
+
       <!-- Recipe Image -->
       <div class="form-group mb-4">
         <label for="image" style="font-weight: 600; color:white;">Upload Recipe Image</label>
@@ -122,6 +161,8 @@
           type="file" 
           class="form-control-file {% if form.image.errors %}is-invalid{% endif %}" 
           name="image" 
+          required
+          
           id="image" style="color:white;">
         <div class="invalid-feedback">
           {{ form.image.errors|join:', ' }}
